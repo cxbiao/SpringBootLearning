@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+   这块等同于userDao的实现，如果使用mapper代理，名空间必须和接口的类路径一样
+-->
+
+<mapper namespace="com.bryan.mapper.UserMapper">
+
+
+    <!-- 开启 UserMapper  namespace中的二级缓存
+      type:指定cache接口的实现类型，mybatis默认使用org.apache.ibatis.cache.impl.PerpetualCache
+         要和ehcache整合,需要将type指定为ehcache中实现的cache接口
+    -->
+    <!--   <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+
+
+    <sql id="query_user_where">
+        <if test="userCustom!=null">
+            <if test="userCustom.sex!=null and userCustom.sex!=''">
+                and sex=#{userCustom.sex}
+            </if>
+            <if test="userCustom.username!=null and userCustom.username!=''">
+                and username like '%${userCustom.username}%'
+            </if>
+
+            <if test="ids!=null">
+                <!-- 使用foreach遍历传入ids
+                collection:指定输入对象中集合属性
+                item:每个遍历生成对象
+                open:开始遍历时拼接的串
+                close:结束遍历时拼接的串
+                separator:遍历的两个对象中需要拼接的串
+                -->
+                <!-- 实现下边的sql拼接
+                  and (id=1 or id=8 or  id=12)
+                 -->
+                <foreach collection="ids" item="user_id" open="and("  close=")" separator="or">
+                    <!--   每个遍历需要拼接的串 -->
+                    id=#{user_id}
+                </foreach>
+
+
+                <!-- 实现 "and id in(1,8,12)"拼接 -->
+                <!-- <foreach collection="ids" item="user_id" open="and id in("  close=")" separator=",">
+                                  每个遍历需要拼接的串
+                   #{user_id}
+                </foreach>  -->
+            </if>
+        </if>
+    </sql>
+
+    <resultMap type="user" id="userResultMap">
+        <!-- id表示查询结果集中唯一标识
+        column:查询出来的列名
+        property:type指定的pojo类型中的属性名
+         -->
+        <id column="id_" property="id"/>
+        <!--
+           result:对普通列名映射定义
+           column:查询出的列名
+           property:type指定的pojo类型中的属性名
+           最终resultMap对column和property作一个映射关系
+         -->
+        <result column="username_" property="username"/>
+    </resultMap>
+
+    <!--
+       在映射文件中配置很多sql语句
+       id:标识映射文件中的sql,称为statement的id
+       parameterType:指定输入参数的类型
+       #{}表示一个占位符号
+       #{id}:其中的id表示输入的参数，参数名称是id,如果输入参数是简单类型，#{}中的参数名可以
+              任意，可以value或者其它名称
+
+        resultType:指定sql输出结果所映射的java对象类型，select指定resultType表示将单条记录映射成的java对象
+        useCache:是否使用二级缓存，默认使用
+     -->
+    <select id="findUserById" parameterType="int" resultType="com.bryan.domain.User" >
+        select * from user where id=#{id}
+    </select>
+
+
+    <!-- 使用resultMap -->
+    <select id="findUserByIdResultMap" parameterType="int" resultMap="userResultMap">
+        select id id_,username username_ from user where id=#{id}
+    </select>
+
+    <!--
+        传递pojo包装类型
+        userCustom.sex 取出包装类型的sex
+     -->
+    <select id="findUserList" parameterType="userQueryVo" resultType="userCustom">
+        select * from user
+        <!-- where可以自动去除条件中的第一个and -->
+        <where>
+            <include refid="query_user_where"></include>
+
+        </where>
+
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="findUserListCount" parameterType="userQueryVo" resultType="int">
+        select count(*) from user where sex=#{userCustom.sex} and username like '%${userCustom.username}%'
+
+    </select>
+
+    <!--
+      ${}:表示拼接sql串，将接收到参数的内容不加任务修饰拼接在sql中
+            使用${}拼接sql，引起sql注入
+      ${value}:接收输入参数的内容，如果传入类型是简单类型，${}中只能使用value
+     -->
+
+    <select id="findUserByName" parameterType="java.lang.String" resultType="com.bryan.domain.User">
+        select * from user where username like '%${value}%'
+    </select>
+
+
+    <!--
+      parameterType:指定输入参数类型是pojo
+      #{}中指定pojo的属性名,接收到pojo对象的属性值，mybatis通过ognl获取对象的属性值
+     -->
+    <insert id="insertUser" parameterType="com.bryan.domain.User">
+        <!--
+                        将插入数据的主键返回，返回到user对象中
+               select last_insert_id():得到刚insert进去记录的主键值，只适用于自增主键
+               keyProperty:将查询到主键值设置到parameterType指定的对象的那个属性
+               order:select last_insert_id()执行顺序，相对地insert语句来说它的执行顺序
+               resultType:指定结果类型
+             -->
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select last_insert_id()
+        </selectKey>
+        insert into user (username,birthday,sex,address) values (#{username},#{birthday},#{sex},#{address})
+        <!--
+                  使用mysql的uuid()生成主键
+                  执行过程:
+                  首先通过uuid()得到主键，将主键设置到user对象的id属性中
+                  其次在insert执行中，从user对象中取出id属性值
+
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+            select uuid()
+        </selectKey>
+       insert into user (id,username,birthday,sex,address) values (#{id},#{username},#{birthday},#{sex},#{address})
+         -->
+
+    </insert>
+
+
+    <delete id="deleteUser" parameterType="int">
+        delete from user where id=#{value}
+    </delete>
+
+    <!-- 动态sql -->
+    <update id="updateUser" parameterType="com.bryan.domain.User">
+
+        update user
+
+        <set>
+            <if test="username!=null and username!=''">
+                username=#{username},
+            </if>
+            <if test="birthday!=null">
+                birthday=#{birthday},
+            </if>
+            <if test="sex!=null and sex!=''">
+                sex=#{sex},
+            </if>
+            <if test="address!=null and address!=''">
+                address=#{address},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

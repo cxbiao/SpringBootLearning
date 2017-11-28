@@ -1,0 +1,11 @@
+server:
+  port: 8081
+  context-path: /boot
+
+cupSize: B
+age: 19
+content: "cupSize:${cupSize},age:${age}"
+
+girl:
+  cupSize: B
+  age: 19

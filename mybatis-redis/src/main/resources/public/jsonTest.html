@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jsonTest</title>
+<meta charset="utf-8" />
+<script type="text/javascript" src="jquery-1.8.3.js"></script>
+<script type="text/javascript">
+	function requestJson() {
+		$.ajax({
+			url : "/boot/requestJson",
+			type : "POST",
+			data : '{"id":2,"legs":4,"weight":6.3,"color":"red"}',
+			dataType : "json",
+			contentType : "application/json",
+			success : function(data) {
+				alert(data);
+				console.log(data);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(textStatus);
+			}
+		});
+	}
+
+	function responseJson() {
+		$.ajax({
+			url : "/boot/responseJson",
+			type : "POST",
+			data : {
+				"id" : 4,
+				"legs" : "6",
+				"weight" : "65.2",
+                "color":"blue"
+			},
+			dataType : "json",
+			success : function(data) {
+				alert(data);
+				console.log(data);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(textStatus);
+			}
+		});
+
+	}
+</script>
+</head>
+
+<body>
+
+	<button onclick="requestJson()">请求json,返回json</button>
+	<button onclick="responseJson()">请求key/value,返回json</button>
+</body>
+</html>

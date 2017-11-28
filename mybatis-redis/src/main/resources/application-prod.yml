@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  context-path: /boot
+
+cupSize: B
+age: 19
+content: "cupSize:${cupSize},age:${age}"
+
+max-idle: 20
+girl:
+  cupSize: F
+  age: 19
