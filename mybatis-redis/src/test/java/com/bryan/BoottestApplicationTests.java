@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = BoottestApplication.class)
 public class BoottestApplicationTests {
 
 	private Logger logger= LoggerFactory.getLogger(BoottestApplication.class);
@@ -25,7 +25,7 @@ public class BoottestApplicationTests {
 	}
 
 
-	@Test
+	//@Test
 	public void testRedis(){
 		System.out.println("==============string====================");
 		System.out.println(redisService.set("uname","china"));
@@ -72,7 +72,7 @@ public class BoottestApplicationTests {
 
 	}
 
-	@Test
+	//@Test
 	public void contextLoads() {
 	}
 

@@ -1,6 +1,7 @@
 server:
   port: 8080
-  context-path: /boot
+  servlet:
+    context-path: /boot
 
 cupSize: B
 age: 19
@@ -10,3 +11,29 @@ max-idle: 20
 girl:
   cupSize: F
   age: 19
+  nodes: jim,tom,jack
+
+# value与-之前要有一个空格
+# :之后要有空格
+# list与set配置
+city:
+  - shanghai
+  - beijin
+  - tianjin
+# 行内对象配置
+#city: [shanghai,beijin,tianjin]
+
+# 对象数组配置
+student:
+  - age: 18
+    name: lily
+    address: beijin
+  - age: 20
+    name: tom
+    address: beijin
+  - age: 28
+    name: jim
+    address: beijin
+
+  # 行内对象配置
+  #student: [{age: 18,name: lily,address: beijin},{age: 20.name: tom.address: beijin},{age: 28,name: jim,addresss: beijin}]

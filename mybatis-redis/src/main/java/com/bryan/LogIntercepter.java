@@ -5,12 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStreamReader;
 import java.util.Map;
 
 public class LogIntercepter implements HandlerInterceptor {
@@ -47,19 +43,22 @@ public class LogIntercepter implements HandlerInterceptor {
         }
 
         //获取body体参数
-        ServletInputStream sis=httpServletRequest.getInputStream();
-        ByteArrayOutputStream baos=new ByteArrayOutputStream();
-        byte[] bytes=new  byte[1024];
-        int len;
-        while ((len=sis.read(bytes,0,bytes.length))!=-1){
-            baos.write(bytes,0,len);
-        }
-        baos.close();
-        sis.close();
-        String requestLine=new String(baos.toByteArray(),httpServletRequest.getCharacterEncoding());
-        if(requestLine!=null &&  requestLine.length()>0){
-            logger.info(requestLine);
-        }
+//        if(!(httpServletRequest.getContextPath()+"/error").equals(httpServletRequest.getRequestURI())){
+//            ServletInputStream sis=httpServletRequest.getInputStream();
+//            ByteArrayOutputStream baos=new ByteArrayOutputStream();
+//            byte[] bytes=new  byte[1024];
+//            int len;
+//            while ((len=sis.read(bytes,0,bytes.length))!=-1){
+//                baos.write(bytes,0,len);
+//            }
+//            baos.close();
+//            sis.close();
+//            String requestLine=new String(baos.toByteArray(),httpServletRequest.getCharacterEncoding());
+//            if(requestLine!=null &&  requestLine.length()>0){
+//                logger.info(requestLine);
+//            }
+//        }
+
 
 
 

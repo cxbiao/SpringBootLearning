@@ -2,17 +2,18 @@ spring:
   # 配置运行环境
   profiles:
             active: prod
+
   # 配置文件上传大小
-  http:
+  servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
    # 配置数据源
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/springboot?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&useSSL=false
-    username: root
-    password: root
+    url: jdbc:mysql://192.168.56.101:3306/springboot?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    username: bryan
+    password: QC456qc!
     # 下面为连接池的补充设置，应用到上面所有数据源中
     # 初始化大小，最小，最大
     druid:
@@ -39,34 +40,37 @@ spring:
       stat-view-servlet:
         login-username: admin
         login-password: admin
-        allow: 127.0.0.1
+        allow: 0.0.0.0
+        enabled: true
+      web-stat-filter:
+        enabled: true
 
 
 
 
-   # 配置redis
+    # 配置redis
   redis:
-    host: localhost
+    host: 192.168.56.101
     port: 6379
-    pool:
-      max-active: 20
-      min-idle: 1
-      max-idle: 8
-      max-wait: 3000
-
+    lettuce:
+      pool:
+        max-active: 20
+        min-idle: 2
+        max-idle: 8
+        max-wait: 3000
+    # 链接超时时间 单位 ms（毫秒）
+    timeout: 3000
 
 
 
 
 # 配置mybatis
 mybatis:
-    typeAliasesPackage: com.bryan.domain
-    mapperLocations: classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.bryan.domain
 
 
-
-
-
-
-
-
+#日志级别
+#logging.level.root=info
+#所有包下面都以debug级别输出
+#logging.level.org.springframework.*=debug

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -22,27 +23,26 @@ import java.util.Random;
 
 @RestController
 @RequestMapping("/api")
+//
+
+@EnableConfigurationProperties(GirlProperties.class)
 public class HelloController {
 
 
     private Logger logger= LoggerFactory.getLogger(HelloController.class);
 
-    @Value("${cupSize}")
+   // @Value("${cupSize}")
     private String cupSize;
 
-    @Value("${age}")
+   // @Value("${age}")
     private Integer age;
 
     @Value("${content}")
     private String content;
 
-
-
-    /**
-     * 使用@ConfigurationProperties明显优于 @Value
-     */
     @Autowired
     private GirlProperties girlProperties;
+
 
 
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
@@ -54,7 +54,8 @@ public class HelloController {
     @GetMapping("/info")
     //@PostMapping("/info")
     public String info(){
-        return  girlProperties.getCupSize();
+        System.out.println(girlProperties.getNodes());
+        return  girlProperties.getCupSize()+":"+girlProperties.getAge();
     }
 
     @GetMapping("/girl/{id}")
