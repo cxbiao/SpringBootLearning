@@ -54,11 +54,22 @@
 
 
 
+  <!--多个环境用，隔开 -->
+    <springProfile name="dev,test">
+        <root level="INFO">
+            <appender-ref ref="consoleLog"/>
+            <appender-ref ref="fileLog"/>
+        </root>
 
-    <root level="INFO">
-        <appender-ref ref="consoleLog" />
-        <appender-ref ref="fileLog"/>
-    </root>
+    </springProfile>
+
+    <springProfile name="prod">
+
+        <root level="INFO">
+            <appender-ref ref="consoleLog"/>
+        </root>
+    </springProfile>
+
 
 
 
@@ -92,6 +103,8 @@
         <appender-ref ref="consoleLog" />
         <appender-ref ref="fileLog" />
     </logger>
+
+
 
 </configuration>
 
