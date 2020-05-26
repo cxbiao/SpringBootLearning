@@ -1,5 +1,6 @@
 package com.bryan;
 
+import com.bryan.domain.User;
 import com.bryan.service.RedisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BoottestApplication.class)
@@ -25,21 +28,38 @@ public class BoottestApplicationTests {
 	}
 
 
-	//@Test
+	@Test
 	public void testRedis(){
 		System.out.println("==============string====================");
 		System.out.println(redisService.set("uname","china"));
 		System.out.println(redisService.set("sex","girl"));
 		System.out.println(redisService.set("token","abcd",3l));
 		System.out.println("token:"+redisService.get("token"));
-		try {
-			Thread.sleep(3000l);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		redisService.set("myhel","中国");
+
+		User u=new User();
+		u.setAddress("xx中");
+		u.setId(2);
+		u.setSex("男");
+		u.setBirthday(new Date());
+		redisService.set("user",u);
+
+
+
+
+//		try {
+//			Thread.sleep(3000l);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+
 		System.out.println(redisService.get("uname"));
 		System.out.println(redisService.get("sex"));
 		System.out.println("token:"+redisService.get("token"));
+		System.out.println("myehl:"+redisService.get("myhel"));
+		System.out.println(redisService.get("user"));
+
+		if(1==1) return;
 		redisService.remove("sex");
 
 

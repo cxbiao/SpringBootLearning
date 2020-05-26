@@ -83,7 +83,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 //         // 解决存储乱码问题
 //         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
 //                 // 缓存过期时间1hours  以application.yml配置文件中的优先级更高
-//                 .entryTtl(Duration.ofHours(1))
+//                 //.entryTtl(Duration.ofHours(1))
 //                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
 //                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
 //                 .disableCachingNullValues();

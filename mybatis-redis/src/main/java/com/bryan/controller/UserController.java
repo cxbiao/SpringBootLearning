@@ -31,7 +31,7 @@ public class UserController  {
     }
 
     @PostMapping("/addUser")
-    public User addUser(User user){
+    public User addUser( User user){
         userService.insertUser(user);
         return user;
     }

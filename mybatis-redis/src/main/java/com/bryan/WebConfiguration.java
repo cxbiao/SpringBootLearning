@@ -36,6 +36,20 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addFormatter(new MyDateFormatter());
+        //registry.addFormatter(new MyDateFormatter());
+        //另外一种日期转换器
+//        registry.addConverter(new Converter<String, Date>() {
+//            @Override
+//            public Date convert(String source) {
+//                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                try {
+//                    return format.parse(source);
+//                } catch (Exception e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
     }
+
+
 }

@@ -25,7 +25,7 @@ public class SpringListener implements ApplicationListener<ContextRefreshedEvent
     public void onApplicationEvent(ContextRefreshedEvent event) {
         //redis spring启动时开启连接，要不然第一次很慢
         logger.info("spring启动完成1");
-        redisTemplate.opsForValue().get("test");
+       // redisTemplate.opsForValue().get("test");
 
     }
 }

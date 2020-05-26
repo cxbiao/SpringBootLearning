@@ -10,7 +10,7 @@ public class User implements Serializable {
     private Integer id;
     private String username;
     private String sex;
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date birthday;
     private String address;
 

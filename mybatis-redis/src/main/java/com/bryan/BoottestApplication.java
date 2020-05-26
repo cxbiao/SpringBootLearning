@@ -8,7 +8,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 
-@MapperScan("com.bryan.mapper")
+@MapperScan(basePackages = "com.bryan.mapper")
 //扫描原生servlet,filter,listener注解,使其可用
 @ServletComponentScan
 @SpringBootApplication
